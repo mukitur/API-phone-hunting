@@ -13,6 +13,16 @@ const displayPhones = (phones) => {
   //   Clear phone container before adding cards
   phoneContainer.textContent = '';
 
+  //   display show all button if product is more than 12
+  const showAllContainer = document.getElementById('show-all-container');
+  if (phones.length > 12) {
+    showAllContainer.classList.remove('hidden');
+  } else {
+    showAllContainer.classList.add('hidden');
+  }
+  //   show first 15  products at a time
+  phones = phones.slice(0, 12);
+
   phones.forEach((phone) => {
     console.log(phone);
     //  2. create a div
@@ -47,6 +57,9 @@ const displayPhones = (phones) => {
 const handleSearch = () => {
   const searchField = document.getElementById('search-field');
   const searchText = searchField.value;
+  //   clear search field
+  searchField.value = '';
+
   loadPhone(searchText);
 };
 // loadPhone();
