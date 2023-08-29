@@ -93,6 +93,34 @@ const handleShowDetailsBtn = async (id) => {
     `https://openapi.programming-hero.com/api/phone/${id}`
   );
   const data = await res.json();
-  console.log(data);
+  showPhoneDetails(data.data);
+};
+
+const showPhoneDetails = (phone) => {
+  const showDetailsContainer = document.getElementById('showDetail-container');
+  showDetailsContainer.innerHTML = `
+    <img class="text-2xl text-center mx-auto my-3" src="${phone.image}" alt="">
+    <h3 class="text-xl font-bold"> ${phone.slug}</h3>
+    <p><span class ="text-bold">Storage:</span> ${
+      phone.mainFeatures.storage
+    } </p>
+    <p><span class ="text-bold">Display Size:</span> ${
+      phone.mainFeatures?.displaySize
+    } </p>
+    <p><span class ="text-bold">Chipset:</span> ${
+      phone.mainFeatures?.chipSet
+    } </p>
+    <p><span class ="text-bold">Memory:</span> ${
+      phone.mainFeatures?.memory
+    } </p>
+    <p><span class ="text-bold">Slug:</span> ${phone.slug} </p>
+    <p><span class ="text-bold">Release Data:</span> ${phone.releaseDate} </p>
+    <p><span class ="text-bold">Brand:</span> ${phone.brand}</p>
+    <p><span class ="text-bold">GPS:</span> ${
+      phone.others?.GPS || 'No GPS Avaolable'
+    } </p>
+`;
+  show_details_modal.showModal();
+  console.log(phone);
 };
 // loadPhone();
