@@ -123,4 +123,4 @@ const showPhoneDetails = (phone) => {
   show_details_modal.showModal();
   console.log(phone);
 };
-// loadPhone();
+loadPhone('13');
