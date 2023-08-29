@@ -1,13 +1,13 @@
-const loadPhone = async (searchText) => {
+const loadPhone = async (searchText, isShowAll) => {
   const res = await fetch(
     `https://openapi.programming-hero.com/api/phones?search=${searchText}`
   );
   const data = await res.json();
-  displayPhones(data.data);
+  displayPhones(data.data, isShowAll);
 };
 
-const displayPhones = (phones) => {
-  console.log(phones);
+const displayPhones = (phones, isShowAll) => {
+  //   console.log(phones);
   //   1. get element
   const phoneContainer = document.getElementById('phone-container');
   //   Clear phone container before adding cards
@@ -15,16 +15,19 @@ const displayPhones = (phones) => {
 
   //   display show all button if product is more than 12
   const showAllContainer = document.getElementById('show-all-container');
-  if (phones.length > 12) {
+  if (phones.length > 12 && !isShowAll) {
     showAllContainer.classList.remove('hidden');
   } else {
     showAllContainer.classList.add('hidden');
   }
-  //   show first 15  products at a time
-  phones = phones.slice(0, 12);
+  //   console.log('is show all', isShowAll);
+  //   show first 15  products at a time if not show all
+  if (!isShowAll) {
+    phones = phones.slice(0, 12);
+  }
 
   phones.forEach((phone) => {
-    console.log(phone);
+    // console.log(phone);
     //  2. create a div
     const phoneCard = document.createElement('div');
     phoneCard.classList = `card bg-gray-100 shadow-xl mt-5`;
@@ -44,7 +47,7 @@ const displayPhones = (phones) => {
     </p>
     <h3 class="text-xl text-center my-3">$999</h3>
     <div class="card-actions justify-center">
-      <button class="btn btn-info">Show Details</button>
+      <button onClick="handleShowDetailsBtn('${phone.slug}')" class="btn btn-info">Show Details</button>
     </div>
   </div>
 `;
@@ -56,14 +59,14 @@ const displayPhones = (phones) => {
 };
 
 // handle search Button
-const handleSearch = () => {
+const handleSearch = (isShowAll) => {
   toggleLoadingSpinner(true);
   const searchField = document.getElementById('search-field');
   const searchText = searchField.value;
   //   clear search field
-  searchField.value = '';
+  //   searchField.value = '';
 
-  loadPhone(searchText);
+  loadPhone(searchText, isShowAll);
 };
 
 const toggleLoadingSpinner = (isLoading) => {
@@ -75,4 +78,21 @@ const toggleLoadingSpinner = (isLoading) => {
   }
 };
 
+// handle Show all
+const handleShowAll = () => {
+  handleSearch(true);
+};
+
+// Handle Show Details Button
+
+const handleShowDetailsBtn = async (id) => {
+  //   console.log('clicked show details', id);
+
+  //   Load Data
+  const res = await fetch(
+    `https://openapi.programming-hero.com/api/phone/${id}`
+  );
+  const data = await res.json();
+  console.log(data);
+};
 // loadPhone();
